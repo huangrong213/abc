@@ -1,0 +1,7 @@
+2019-06-20 14:51:27,324 INFO main [com.tools.httprequest.GetHttp]info(line:64)响应体为:200
+2019-06-20 14:52:34,541 INFO main [com.tools.httprequest.GetHttp]info(line:64)响应体为:io.restassured.internal.RestAssuredResponseImpl@7eb01b12
+2019-06-20 14:53:25,051 INFO main [com.tools.httprequest.GetHttp]info(line:64)响应体为:io.restassured.internal.RestAssuredResponseImpl@7eb01b12
+2019-06-20 14:53:52,523 INFO main [com.tools.httprequest.GetHttp]info(line:64)响应体为:io.restassured.path.json.JsonPath@7eb01b12
+2019-06-20 14:54:48,598 INFO main [com.tools.httprequest.GetHttp]info(line:64)响应体为:{"code":200,"msg":"统计成功!","data":null}
+2019-06-20 14:57:14,537 INFO main [com.tools.httprequest.GetHttp]info(line:64)预期值为200:实际值为:200
+2019-06-26 22:14:22,539 WARN main [com.tools.excelread.ExcelUtil]warn(line:72)文件格式必须是xls格式
