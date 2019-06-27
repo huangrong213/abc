@@ -7,9 +7,11 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class HRExcelDataRequest {
+
     //Excel路径
     public String filePath;
     //sheet名
@@ -47,19 +49,19 @@ public class HRExcelDataRequest {
             response.print();
         } else if (Methond.equalsIgnoreCase("post")) {
             //请求方式是post
+
             response = PostHttp.postHttp(URL, Parames);
             //打印响应体
             response.print();
         }
         //执行完请求后将结果写回数据到excel
 
+//        HRExcelRead.writeInfoToExcelByCell(filePath, 6, number, data1);//data
+//        HRExcelRead.writeInfoToExcelByCell(filePath, 7, number, msg);//msg
+
         return response;
-//        int HttpCode = Integer.parseInt(data.get("HttpCode"));
-//        System.out.println(code);
-//        System.out.println(data.toString());
 
     }
-
 
 
 }

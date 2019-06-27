@@ -2,22 +2,17 @@ package com.tools.excelread;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class HRExcelRead {
     private static Logger logger = Logger.getLogger(HRExcelRead.class);
+    private static HSSFWorkbook workbook = null;
 
     /**
      * 判断文件是否存在
@@ -101,16 +96,136 @@ public class HRExcelRead {
 
 
     /**
-     * 往excel中写入数据
-     * @param Row 指定行
-     * @param cell 指定列
-     * @param text 写入内容
+     * 往Excel中写入数据
+     *
+     * @param filePath  文件名
+     * @param sheetName sheet名字
+     * @param cell      列
+     * @param row       行
+     * @param content   写入数据
      */
-    public static void writeExcel(int Row, int cell, String text) {
+    public static void writeInfoToExcelByCell(String filePath, String sheetName, int cell, int row, String content) {
+        //判断文件是否存在
+        if (false) {
+            ExcelUtil.createExcel1(filePath);
+        }
+        //创建一个文件
+        File file = new File(filePath);
+        try {
+            //创建一个工作薄，HSS是.xls？
+            workbook = new HSSFWorkbook(new FileInputStream(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Sheet sheet;
+        try {
+            //设置sheet名，0指第1张Sheet
+            sheet = workbook.getSheet(sheetName);
+        } catch (Exception e) {
+            sheet = workbook.createSheet();
+        }
+
+        Row row1 = sheet.getRow(row);
+        Cell cell1 = row1.getCell(cell);
+
+        cell1.getCellType();
+        cell1.setCellValue(content);
+
+//        Cell cellValue = sheet.getRow(row).getCell(cell);
+//        cellValue.setCellValue(content);
+
+        //写入excel
+        saveFile(filePath);
+    }
+
+
+    /**
+     * 设置单元格背景颜色
+     *
+     * @param filePath  文件路径
+     * @param sheetName sheet名字
+     * @param cell      要设置颜色的列
+     * @param row       要设置颜色的行
+     * @param color     要设置的颜色
+     */
+    public static void setCellBackgroundColor(String filePath, String sheetName, int cell,
+                                              int row, int color) throws IOException {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+//        File file = new File(filePath);
+        //Workbook workbook = getWorkBook(filePath);
+        XSSFSheet sheet = workbook.getSheet(sheetName);
+
+        //int columnIndex = getColumnIndex(titleRow - 1, columnName);
+//        XSSFRow row1 = sheet.getRow(row);
+//        XSSFCell cell1 = row.getCell(columnIndex);
+        XSSFCell cellValue = sheet.getRow(row).getCell(cell);
+//        XSSFCellStyle old = (XSSFCellStyle) cellValue.getCellStyle();
+        CellStyle temp = workbook.createCellStyle();
+        temp.cloneStyleFrom(cellValue.getCellStyle()); // 拷贝旧的样式
+
+        switch (color) {
+            case 0:
+                // 红色
+                temp.setFillForegroundColor(IndexedColors.RED.getIndex());
+                break;
+            case 1:
+                // 绿色
+                temp.setFillForegroundColor(IndexedColors.BRIGHT_GREEN.getIndex());
+                break;
+            case 2:
+                // 灰色
+                temp.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+                break;
+            case 3:
+                // 黄色
+                temp.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
+                break;
+            case 4:
+                // 白色
+                temp.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+                break;
+            default:
+                logger.error("设定颜色参数 (color) 错误...");
+                System.out.println("设定颜色参数 (color) 错误...");
+                break;
+        }
+
+        temp.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        // XSSFFont font = book.createFont();
+        // font.setFontHeightInPoints((short)9); // 字体大小
+        // font.setFontName("宋体");
+        // temp.setFont(font);
+        cellValue.setCellStyle(temp);
+        saveFile(filePath);
+//        if (true) {
+//            FileOutputStream out = new FileOutputStream(file);
+//            workbook.write(out);
+//            out.close();
+//        } else {
+//            logger.error("文件: " + filePath + ", 正被使用, 请关闭! 程序执行终止...");
+//            System.out.println("文件: " + filePath + ", 正被使用, 请关闭! 程序执行终止...");
+//            System.exit(-1);
+//        }
 
 
     }
 
+
+    /**
+     * 将更改后的workbook写入excelFilePath位置
+     * <p/>
+     * <li>如果该文件不存在，则进行创建新文件</li>
+     * <li>如果该文件已经存在，则进行覆盖</li>
+     */
+    public static void saveFile(String excelFilePath) {
+        try {
+            FileOutputStream outputStream = new FileOutputStream(new File(excelFilePath));
+            workbook.write(outputStream);
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 通过sheet 行号和列返回值
