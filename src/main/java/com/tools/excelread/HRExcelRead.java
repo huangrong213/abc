@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * 对Excel做读、写操作的类
+ * @author huangrong
+ */
 public class HRExcelRead {
     private static Logger logger = Logger.getLogger(HRExcelRead.class);
     private static HSSFWorkbook workbook = null;
@@ -104,15 +108,16 @@ public class HRExcelRead {
      * @param row       行
      * @param content   写入数据
      */
-    public static void writeInfoToExcelByCell(String filePath, String sheetName, int cell, int row, String content) {
+    public static void writeInfoToExcelByCell(String filePath, String sheetName,
+                                              int cell, int row, String content) {
         //判断文件是否存在
-        if (false) {
-            ExcelUtil.createExcel1(filePath);
-        }
+//        if (false) {
+//            ExcelUtil.createExcel1(filePath);
+//        }
         //创建一个文件
         File file = new File(filePath);
         try {
-            //创建一个工作薄，HSS是.xls？
+            //创建一个工作薄
             workbook = new HSSFWorkbook(new FileInputStream(file));
         } catch (IOException e) {
             e.printStackTrace();
@@ -128,7 +133,7 @@ public class HRExcelRead {
         Row row1 = sheet.getRow(row);
         Cell cell1 = row1.getCell(cell);
 
-        cell1.getCellType();
+//        cell1.getCellType();
         cell1.setCellValue(content);
 
 //        Cell cellValue = sheet.getRow(row).getCell(cell);
@@ -149,19 +154,23 @@ public class HRExcelRead {
      * @param color     要设置的颜色
      */
     public static void setCellBackgroundColor(String filePath, String sheetName, int cell,
-                                              int row, int color) throws IOException {
-        XSSFWorkbook workbook = new XSSFWorkbook();
-//        File file = new File(filePath);
-        //Workbook workbook = getWorkBook(filePath);
-        XSSFSheet sheet = workbook.getSheet(sheetName);
+                                              int row, int color)  {
+        File file = new File(filePath);
+        try {
+            //创建一个工作薄
+             workbook= new HSSFWorkbook(new FileInputStream(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        //int columnIndex = getColumnIndex(titleRow - 1, columnName);
-//        XSSFRow row1 = sheet.getRow(row);
-//        XSSFCell cell1 = row.getCell(columnIndex);
-        XSSFCell cellValue = sheet.getRow(row).getCell(cell);
-//        XSSFCellStyle old = (XSSFCellStyle) cellValue.getCellStyle();
+        Sheet sheet = workbook.getSheet(sheetName);
+
+        Row row1 = sheet.getRow(row);
+        Cell cell1 = row1.getCell(cell);
+//        XSSFCell cellValue = sheet.getRow(row).getCell(cell);
+        CellStyle old = cell1.getCellStyle();
         CellStyle temp = workbook.createCellStyle();
-        temp.cloneStyleFrom(cellValue.getCellStyle()); // 拷贝旧的样式
+        temp.cloneStyleFrom(old); // 拷贝旧的样式
 
         switch (color) {
             case 0:
@@ -195,18 +204,8 @@ public class HRExcelRead {
         // font.setFontHeightInPoints((short)9); // 字体大小
         // font.setFontName("宋体");
         // temp.setFont(font);
-        cellValue.setCellStyle(temp);
+        cell1.setCellStyle(temp);
         saveFile(filePath);
-//        if (true) {
-//            FileOutputStream out = new FileOutputStream(file);
-//            workbook.write(out);
-//            out.close();
-//        } else {
-//            logger.error("文件: " + filePath + ", 正被使用, 请关闭! 程序执行终止...");
-//            System.out.println("文件: " + filePath + ", 正被使用, 请关闭! 程序执行终止...");
-//            System.exit(-1);
-//        }
-
 
     }
 

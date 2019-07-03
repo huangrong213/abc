@@ -4,13 +4,9 @@ import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.*;
 
-import com.tools.log4j.LoggerControler;
-
-import static com.tools.log4j.LoggerControler.getLogg;
 
 public class GetHttp {
 
-    final static LoggerControler log = getLogg(GetHttp.class);
 
     /**
      * get请求
@@ -21,7 +17,6 @@ public class GetHttp {
     public static Response getHttp(String url, String params) {
         Response response = given()
                 .contentType("application/json;charset=UTF-8")
-//                .header("","")
                 .param(params)
                 .get(url);
         return response;
@@ -30,23 +25,14 @@ public class GetHttp {
 
     /**
      * 检查是否正常
+     *
      * @return
      */
-    public boolean requsetCheck(){
+    public boolean requsetCheck() {
 
-    return  true;
+        return true;
 
     }
-
-
-
-
-
-
-
-
-
-
 
 
 }

@@ -1,13 +1,10 @@
 package com.tools.httprequest;
 
-import com.tools.log4j.LoggerControler;
 import io.restassured.response.Response;
 
-import static com.tools.log4j.LoggerControler.getLogg;
 import static io.restassured.RestAssured.given;
 
 public class PostHttp {
-    final static LoggerControler log = getLogg(GetHttp.class);
 
     /**
      * post请求
@@ -22,6 +19,16 @@ public class PostHttp {
                 .post(url);
         return response;
     }
+
+//    public static Response postWithCookies(String url, String bodystring, String cookies, String headers) {
+//        Response response = given()
+////                .headers("content-type", "application/json")
+////                .cookies("usercookies", "11111111")
+////                .body(bodystring)
+//                .post("127.0.0.1:1122/postDemo");
+//        return response;
+
+//    }
 
 
 }

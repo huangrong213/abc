@@ -4,7 +4,7 @@
         <classes>
             <class name="com.testcase.http.ReadExcelTest">
                 <methods>
-                    <include name="test01"/>
+                    <include name="testCase01"/>
                 </methods>
             </class>
         </classes>
